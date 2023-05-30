@@ -1,3 +1,6 @@
+import { config } from 'dotenv';
+config();
+
 import express, { Request, Response } from 'express';
 import mongoose from 'mongoose';
 
@@ -19,11 +22,7 @@ app.post('/projects', async (req: Request, res: Response) => {
 	res.json(createdUser);
 });
 
-mongoose
-	.connect(
-		'mongodb+srv://cm:cm@bugtracker.iqzigmx.mongodb.net/?retryWrites=true&w=majority'
-	)
-	.then(() => {
-		console.log(`listening on port ${PORT}`);
-		app.listen(PORT);
-	});
+mongoose.connect(process.env.MONGO_URL ?? '').then(() => {
+	console.log(`listening on port ${PORT}`);
+	app.listen(PORT);
+});
