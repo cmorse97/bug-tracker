@@ -1,22 +1,38 @@
 import { config } from 'dotenv';
 config();
 import express from 'express';
-const app = express();
-import bodyParser from 'body-parser';
-import passport from 'passport';
+import cors from 'cors';
 import mongoose from 'mongoose';
-import router from './routes/auth.js';
-import jwt from 'jsonwebtoken';
+import { auth, requiredScopes } from 'express-oauth2-jwt-bearer';
 
-// require('./controllers/controller.tokenJWT');
+// Create an Express app
+const app = express();
+app.use(cors());
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+// Authorization middleware. When used, the Access Token must
+// exist and be verified against the Auth0 JSON Web Key Set.
+const checkJwt = auth({
+	audience: 'https://dev-c6jfluhthfm1zyy1.us.auth0.com/api/v2/',
+	issuerBaseURL: `https://dev-c6jfluhthfm1zyy1.us.auth0.com/`,
+});
 
-app.use('/auth', router);
+app.get('/api/public', (req, res) => {
+	res.json({
+		message: 'Public Test Endpoint',
+	});
+});
 
-app.get('/OAuthRedirecting', (req, res) => {
-	res.send('token passed successfully');
+app.get('/api/test', checkJwt, (req, res) => {
+	res.json({ message: 'Private API Endpoint, Token verified.' });
+});
+
+const checkScopes = requiredScopes('read:messages');
+
+app.get('/api/private-scoped', checkJwt, checkScopes, function (req, res) {
+	res.json({
+		message:
+			'Hello from a private endpoint! You need to be authenticated and have a scope of read:messages to see this.',
+	});
 });
 
 mongoose
