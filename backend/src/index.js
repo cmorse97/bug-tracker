@@ -1,8 +1,6 @@
 import { config } from 'dotenv';
 config();
 import express from 'express';
-import { expressjwt as jwt } from 'express-jwt';
-import jwksRsa from 'jwks-rsa';
 import jwtCheck from './middleware/auth0Middleware.js';
 import cors from 'cors';
 import mongoose from 'mongoose';

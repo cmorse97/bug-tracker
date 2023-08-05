@@ -20,11 +20,12 @@ router.get(
 		session: false,
 	}),
 	(req, res) => {
-		res.redirect('http://localhost:5175/');
+		res.redirect('http://localhost:5173/');
 		const token = jwt.sign(
 			{ user: { email: req.user.email }, id: req.user._id },
 			process.env.JWT_SECRET_KEY
 		);
+		console.log(token);
 		res.json({ token });
 	}
 );

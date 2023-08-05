@@ -1,26 +1,10 @@
 import Login from './pages/Login';
 import Profile from './pages/Profile';
-import Button from './components/Button';
-import axios from 'axios';
+import Dashboard from './pages/Dashboard';
 import { useAuth0 } from '@auth0/auth0-react';
-import './styles/index.css';
 
 function App() {
-	const { user, isAuthenticated, isLoading, logout, getAccessTokenSilently } =
-		useAuth0();
-	const handleTest = async () => {
-		try {
-			const accessToken = await getAccessTokenSilently();
-
-			const response = await axios.get('http://localhost:8000/api/test', {
-				headers: { Authorization: `Bearer ${accessToken}` },
-			});
-
-			console.log(response.data); // Handle the response data
-		} catch (error) {
-			console.error(error);
-		}
-	};
+	const { isAuthenticated, isLoading, logout } = useAuth0();
 
 	// if (isLoading) {
 	// 	return <div>Loading...</div>;
@@ -30,8 +14,8 @@ function App() {
 		return (
 			<div>
 				{/* @todo - this is where your dashboard (main app) will live */}
-				<Profile user={user} />
-				<Button onClick={handleTest}>Test API call</Button>
+				<Dashboard />
+				<button onClick={logout}>Logout</button>
 			</div>
 		);
 	} else {
