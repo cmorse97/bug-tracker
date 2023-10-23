@@ -1,40 +1,46 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 const projectSchema = mongoose.Schema(
 	{
 		user: {
 			type: mongoose.Schema.Types.ObjectId,
 			required: true,
-			ref: 'User',
+			ref: 'User'
 		},
+		tasks: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: 'Task'
+			}
+		],
 		title: {
 			type: String,
-			required: [true, 'Please add a project title'],
+			required: [true, 'Please add a project title']
 		},
 		description: {
-			type: String,
+			type: String
 		},
 		due_date: {
-			type: Date,
+			type: Date
 		},
 		priority: {
 			type: [String],
 			required: [true, 'Please set a priority level for this project.'],
-			enum: ['low', 'medium', 'high'],
+			enum: ['low', 'medium', 'high']
 		},
 		status: {
 			type: Boolean,
 			required: true,
-			default: false,
-		},
+			default: false
+		}
 	},
 	{
-		timestamps: true,
+		timestamps: true
 	}
-);
+)
 
 projectSchema.virtual('statusText').get(() => {
-	return this.status ? 'completed' : 'in progress';
-});
+	return this.status ? 'completed' : 'in progress'
+})
 
-module.exports = mongoose.model('Project', projectSchema);
+module.exports = mongoose.model('Project', projectSchema)

@@ -2,6 +2,7 @@ const asyncHandler = require('express-async-handler')
 
 const Project = require('../models/projectModel')
 const User = require('../models/userModel')
+const Task = require('../models/taskModel')
 
 // @desc Get projects
 // @route GET /api/projects
@@ -21,8 +22,20 @@ const setProject = asyncHandler(async (req, res) => {
 		throw new Error('Please add text field')
 	}
 
+	// Fetch and verify tasks
+	const tasks = await Task.find({
+		_id: { $in: req.body.tasks },
+		user: req.user.id // Ensure tasks belong to the user
+	})
+
+	if (tasks.length !== req.body.tasks.length) {
+		res.status(400)
+		throw new Error('Invalid task(s) provided.')
+	}
+
 	const project = await Project.create({
 		user: req.user.id,
+		tasks: tasks.map(task => task._id),
 		title: req.body.title,
 		description: req.body.description,
 		due_date: req.body.due_date,
