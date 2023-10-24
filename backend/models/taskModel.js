@@ -16,6 +16,7 @@ const taskSchema = mongoose.Schema({
 	due_date: {
 		type: Date
 	},
+	// @todo, make due date responsive to priority level
 	priority: {
 		type: [String],
 		default: 'Low',

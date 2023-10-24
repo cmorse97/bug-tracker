@@ -28,11 +28,6 @@ const setProject = asyncHandler(async (req, res) => {
 		user: req.user.id // Ensure tasks belong to the user
 	})
 
-	if (tasks.length !== req.body.tasks.length) {
-		res.status(400)
-		throw new Error('Invalid task(s) provided.')
-	}
-
 	const project = await Project.create({
 		user: req.user.id,
 		tasks: tasks.map(task => task._id),

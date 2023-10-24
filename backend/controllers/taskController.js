@@ -37,13 +37,16 @@ const setTask = asyncHandler(async (req, res) => {
 
 	const task = await Task.create({
 		user: req.user.id,
-		project: req.body.projectId,
 		title: req.body.title,
 		description: req.body.description,
 		due_date: req.body.due_date,
 		priority: req.body.priority,
 		status: req.body.status
 	})
+
+	const updatedTasks = [...project.tasks, task]
+	project.tasks = updatedTasks
+	await project.save()
 
 	res.status(200).json({ task })
 })
