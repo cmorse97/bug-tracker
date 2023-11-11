@@ -9,14 +9,7 @@ import Homepage from './pages/Homepage.jsx'
 import './index.css'
 
 const router = createBrowserRouter([
-	{
-		path: '/',
-		element: <Root />,
-		errorElement: <ErrorPage />
-	},
-	{
-		path: 'register',
-		element: <RegisterUser />,
+
 		errorElement: <ErrorPage />
 	},
 	{
