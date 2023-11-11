@@ -1,9 +1,12 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
+import axios from 'axios'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 
 const Root = () => {
+	const { login } = useAuth()
 	const [formData, setFormData] = useState({
 		email: '',
 		password: ''
@@ -18,17 +21,22 @@ const Root = () => {
 
 		try {
 			// Send a POST request to backend
-			const response = await fetch('http://localhost:3000/api/users/login', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(formData)
-			})
+			const response = await axios.post(
+				'http://localhost:3000/api/users/login',
+				{
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify(formData)
+				}
+			)
 
 			if (response.ok) {
-				// Registration successful, redirect to user homepage
-				// history.push('/user/homepage')
+				const { token } = await response.json()
+
+				// Store the token in an HTTP-only cookie
+				document.cookie = `token=${token}; path=/; secure; HttpOnly`
+
 				console.log('Login successful')
 			} else {
 				// @todo Error modal

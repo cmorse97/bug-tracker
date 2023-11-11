@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import axios from 'axios'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 // import { useHistory } from 'react-router-dom'
@@ -21,8 +22,7 @@ const RegisterUser = () => {
 
 		try {
 			// Send a POST request to backend
-			const response = await fetch('http://localhost:3000/api/users', {
-				method: 'POST',
+			const response = await axios.post('http://localhost:3000/api/users', {
 				headers: {
 					'Content-Type': 'application/json'
 				},
@@ -30,8 +30,11 @@ const RegisterUser = () => {
 			})
 
 			if (response.ok) {
-				// Registration successful, redirect to user homepage
-				// history.push('/user/homepage')
+				const { token } = await response.json()
+
+				// Store the token in an HTTP-only cookie
+				document.cookie = `token=${token}; path=/; secure; HttpOnly`
+
 				console.log('Registration successful')
 			} else {
 				// @todo Error modal
