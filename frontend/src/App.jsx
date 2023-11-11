@@ -8,7 +8,7 @@ const App = () => {
 		<>
 			<RegisterUser />
 			<h1>Bug Tracker Pro</h1>
-			<h2> Hey I just made a breaking change to my code</h2>
+			<h1>By Caleb Morse</h1>
 		</>
 	)
 }
