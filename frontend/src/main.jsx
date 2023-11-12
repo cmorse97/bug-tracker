@@ -4,25 +4,28 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext.jsx'
 import App from './App.jsx'
 import Root from './routes/root.jsx'
+import Header from './components/Header.jsx'
+import Login from './pages/Login.jsx'
 import ErrorPage from './pages/ErrorPage.jsx'
-import RegisterUser from './routes/RegisterUser.jsx'
-import Homepage from './pages/Homepage.jsx'
+import Register from './pages/Register.jsx'
+import Dashboard from './pages/Dashboard.jsx'
+import { FaSpinner } from 'react-icons/fa'
 import './index.css'
 
 const router = createBrowserRouter([
 	{
 		path: '/',
-		element: <Root />,
+		element: <Dashboard />,
 		errorElement: <ErrorPage />
 	},
 	{
 		path: 'register',
-		element: <RegisterUser />,
+		element: <Register />,
 		errorElement: <ErrorPage />
 	},
 	{
-		path: 'homepage',
-		element: <Homepage />,
+		path: 'login',
+		element: <Login />,
 		errorElement: <ErrorPage />
 	}
 ])
@@ -30,7 +33,7 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById('root')).render(
 	<React.StrictMode>
 		<AuthProvider>
-			<RouterProvider router={router} />
+			<RouterProvider router={router} fallbackElement={<FaSpinner />} />
 		</AuthProvider>
 	</React.StrictMode>
 )
