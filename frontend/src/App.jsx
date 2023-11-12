@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import RegisterUser from './routes/RegisterUser'
+import RegisterUser from './pages/Register'
 
 import './App.css'
 
