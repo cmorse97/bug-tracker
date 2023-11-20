@@ -1,12 +1,15 @@
 import axios from 'axios'
 import { AuthContext } from '../context/AuthContext'
 import { useState, useEffect, useContext } from 'react'
+import Button from 'react-bootstrap/Button'
+import NewProjectModal from '../components/NewProjectModal'
+import Header from '../components/Header'
 
 const Dashboard = () => {
 	const { token } = useContext(AuthContext)
-	console.log(token)
 
 	const [projectData, setProjectData] = useState([])
+	const [showModal, setShowModal] = useState(false)
 
 	useEffect(() => {
 		// Send GET request to backend
@@ -26,14 +29,21 @@ const Dashboard = () => {
 		fetchProjects()
 	}, [])
 
+	const handleClick = () => {}
+
 	return (
 		<>
+			<Header />
 			<div>Dashboard</div>
 			<div>
 				{projectData.map(project => (
 					<li key={project._id}>{project.title}</li>
 				))}
 			</div>
+			<Button variant='primary' onClick={() => setShowModal(!showModal)}>
+				New Project
+			</Button>
+			<NewProjectModal showModal={showModal} setShowModal={setShowModal} />
 		</>
 	)
 }
