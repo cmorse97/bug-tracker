@@ -1,14 +1,13 @@
 import { useState } from 'react'
-import { useAuth } from '../context/AuthContext'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import axios from 'axios'
-import Button from 'react-bootstrap/Button'
-import Form from 'react-bootstrap/Form'
 
-const Login = () => {
-	const { login } = useAuth()
-	const navigate = useNavigate()
+// import { useHistory } from 'react-router-dom'
+
+const Register = () => {
+	// const history = useHistory()
 	const [formData, setFormData] = useState({
+		username: '',
 		email: '',
 		password: ''
 	})
@@ -19,34 +18,45 @@ const Login = () => {
 
 	const handleSubmit = async e => {
 		e.preventDefault()
+
 		try {
 			// Send a POST request to backend
-			const response = await axios.post(
-				'http://localhost:3000/api/users/login',
-				formData,
-				{
-					headers: {
-						'Content-Type': 'application/json'
-					}
-				}
-			)
-			if (response.status === 200) {
-				const token = response.data.token
-				login(token)
-				navigate('/')
-				console.log('Login successful')
+			const response = await axios.post('http://localhost:3000/api/users', {
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(formData)
+			})
+
+			if (response.ok) {
+				const { token } = await response.json()
+
+				// Store the token in an HTTP-only cookie
+				document.cookie = `token=${token}; path=/; secure; HttpOnly`
+
+				console.log('Registration successful')
 			} else {
 				// @todo Error modal
-				throw new Error('Error logging in user')
+				throw new Error('Error registering user')
 			}
 		} catch (error) {
-			console.error('Login error:', error)
+			console.error('Registration error:', error)
 		}
 	}
 
 	return (
 		<>
 			<Form onSubmit={handleSubmit}>
+				<Form.Group controlId='formUsername'>
+					<Form.Label>Username</Form.Label>
+					<Form.Control
+						type='text'
+						name='username'
+						onChange={handleChange}
+						required
+					/>
+				</Form.Group>
+
 				<Form.Group controlId='formEmail'>
 					<Form.Label>Email address</Form.Label>
 					<Form.Control
@@ -68,15 +78,11 @@ const Login = () => {
 				</Form.Group>
 
 				<Button variant='primary' type='submit'>
-					login
-					{/* If login successful, redirect to '/' */}
+					<Link to={`/homepage`}>Register</Link>
 				</Button>
 			</Form>
-			<Button>
-				<Link to={`register`}>Register</Link>
-			</Button>
 		</>
 	)
 }
 
-export default Login
+export default Register
