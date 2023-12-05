@@ -12,6 +12,7 @@
 	"author": "Caleb Morse",
 	"license": "MIT",
 	"dependencies": {
+		"@material-tailwind/react": "^2.1.5",
 		"bcryptjs": "^2.4.3",
 		"colors": "^1.4.0",
 		"concurrently": "^8.2.2",
