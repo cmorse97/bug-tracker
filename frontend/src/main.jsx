@@ -12,6 +12,8 @@ import Dashboard from './pages/Dashboard.jsx'
 import { FaSpinner } from 'react-icons/fa'
 import './index.css'
 
+import { ThemeProvider } from '@material-tailwind/react'
+
 const router = createBrowserRouter([
 	{
 		path: '/',
@@ -32,8 +34,10 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')).render(
 	<React.StrictMode>
-		<AuthProvider>
-			<RouterProvider router={router} fallbackElement={<FaSpinner />} />
-		</AuthProvider>
+		<ThemeProvider>
+			<AuthProvider>
+				<RouterProvider router={router} fallbackElement={<FaSpinner />} />
+			</AuthProvider>
+		</ThemeProvider>
 	</React.StrictMode>
 )
