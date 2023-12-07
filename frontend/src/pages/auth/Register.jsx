@@ -1,11 +1,20 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext'
+import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
-
-// import { useHistory } from 'react-router-dom'
+import {
+	Card,
+	CardHeader,
+	CardBody,
+	CardFooter,
+	Typography,
+	Input,
+	Button
+} from '@material-tailwind/react'
 
 const Register = () => {
-	// const history = useHistory()
+	const { login } = useAuth()
+	const navigate = useNavigate()
 	const [formData, setFormData] = useState({
 		username: '',
 		email: '',
@@ -29,11 +38,10 @@ const Register = () => {
 			})
 
 			if (response.ok) {
-				const { token } = await response.json()
-
-				// Store the token in an HTTP-only cookie
-				document.cookie = `token=${token}; path=/; secure; HttpOnly`
-
+				const token = response.data.token
+				sessionStorage.setItem('jwtToken', token)
+				login(token)
+				navigate('/dashboard')
 				console.log('Registration successful')
 			} else {
 				// @todo Error modal
@@ -45,43 +53,62 @@ const Register = () => {
 	}
 
 	return (
-		<>
-			<Form onSubmit={handleSubmit}>
-				<Form.Group controlId='formUsername'>
-					<Form.Label>Username</Form.Label>
-					<Form.Control
-						type='text'
+		<div className='flex items-center justify-center h-screen'>
+			<Card className='w-96'>
+				<CardHeader
+					variant='gradient'
+					color='gray'
+					className='grid mb-4 h-28 place-items-center'
+				>
+					<Typography variant='h3' color='white'>
+						Sign Up
+					</Typography>
+				</CardHeader>
+				<CardBody className='flex flex-col gap-4'>
+					<Input
+						label='Username'
+						size='lg'
+						onChange={handleChange}
 						name='username'
-						onChange={handleChange}
-						required
+						value={formData.username}
 					/>
-				</Form.Group>
-
-				<Form.Group controlId='formEmail'>
-					<Form.Label>Email address</Form.Label>
-					<Form.Control
-						type='email'
+					<Input
+						label='Email'
+						size='lg'
+						onChange={handleChange}
 						name='email'
-						onChange={handleChange}
-						required
+						value={formData.email}
 					/>
-				</Form.Group>
-
-				<Form.Group controlId='formPassword'>
-					<Form.Label>Password</Form.Label>
-					<Form.Control
-						type='password'
+					<Input
+						label='Password'
+						size='lg'
+						onChange={handleChange}
 						name='password'
-						onChange={handleChange}
-						required
+						value={formData.password}
 					/>
-				</Form.Group>
-
-				<Button variant='primary' type='submit'>
-					<Link to={`/homepage`}>Register</Link>
-				</Button>
-			</Form>
-		</>
+				</CardBody>
+				<CardFooter className='pt-0'>
+					<Button
+						variant='gradient'
+						fullWidth
+						type='submit'
+						onClick={handleSubmit}
+					>
+						Sign Up
+					</Button>
+					<Typography variant='small' className='flex justify-center mt-6'>
+						Already have an account?
+						<Typography
+							variant='small'
+							color='blue-gray'
+							className='ml-1 font-bold'
+						>
+							<Link to='/'>Sign In</Link>
+						</Typography>
+					</Typography>
+				</CardFooter>
+			</Card>
+		</div>
 	)
 }
 

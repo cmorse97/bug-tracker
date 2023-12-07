@@ -1,11 +1,19 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useState, useEffect } from 'react'
 
 export const AuthContext = createContext()
 
 export const AuthProvider = ({ children }) => {
 	const [token, setToken] = useState(null)
 
+	useEffect(() => {
+		// @todo - redirect if token does not exist
+
+		const token = sessionStorage.getItem('jwtToken')
+		setToken(token)
+	}, [])
+
 	const login = newToken => {
+		sessionStorage.setItem('jwtToken', newToken)
 		setToken(newToken)
 	}
 

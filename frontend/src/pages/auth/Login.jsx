@@ -22,7 +22,6 @@ const Login = () => {
 	})
 
 	const handleChange = e => {
-		console.log(formData)
 		setFormData({ ...formData, [e.target.name]: e.target.value })
 	}
 
@@ -41,9 +40,10 @@ const Login = () => {
 			)
 			if (response.status === 200) {
 				const token = response.data.token
+				// sessionStorage.setItem('jwtToken', token)
+				
 				login(token)
 				navigate('/dashboard')
-				console.log('Login successful')
 			} else {
 				// @todo Error modal
 				throw new Error('Error logging in user')
