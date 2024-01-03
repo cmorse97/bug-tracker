@@ -1,16 +1,28 @@
-import { useState } from 'react'
-import RegisterUser from './pages/Register'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
-import './App.css'
+import Login from './pages/auth/Login'
+import Register from './pages/auth/Register'
+import Dashboard from './pages/user/Dashboard'
+import ErrorPage from './pages/ErrorPage'
 
-const App = () => {
-	return (
-		<>
-			<RegisterUser />
-			<h1>Bug Tracker Pro</h1>
-			<h1>By Caleb Morse</h1>
-		</>
-	)
-}
+const router = createBrowserRouter([
+	{
+		path: '/',
+		element: <Login />,
+		errorElement: <ErrorPage />
+	},
+	{
+		path: '/register',
+		element: <Register />,
+		errorElement: <ErrorPage />
+	},
+	{
+		path: '/dashboard',
+		element: <Dashboard />,
+		errorElement: <ErrorPage />
+	}
+])
+
+const App = () => <RouterProvider router={router} />
 
 export default App
