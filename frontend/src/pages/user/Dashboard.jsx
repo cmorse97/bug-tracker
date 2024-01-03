@@ -1,9 +1,12 @@
 import axios from 'axios'
 import { AuthContext } from '../../context/AuthContext'
 import { useState, useEffect, useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Button } from '@material-tailwind/react'
 
 const Dashboard = () => {
 	const { token, logout } = useContext(AuthContext)
+	const navigate = useNavigate()
 
 	const [projectData, setProjectData] = useState([])
 
@@ -30,6 +33,11 @@ const Dashboard = () => {
 		fetchProjects()
 	}, [token])
 
+	const handleLogout = () => {
+		logout(null)
+		navigate('/')
+	}
+
 	return (
 		<>
 			<div>Dashboard</div>
@@ -38,6 +46,7 @@ const Dashboard = () => {
 					<li key={project._id}>{project.title}</li>
 				))}
 			</div>
+			<Button onClick={handleLogout}>logout</Button>
 		</>
 	)
 }

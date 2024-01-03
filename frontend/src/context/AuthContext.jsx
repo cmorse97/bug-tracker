@@ -18,6 +18,7 @@ export const AuthProvider = ({ children }) => {
 	}
 
 	const logout = () => {
+		sessionStorage.setItem('jwtToken', null)
 		setToken(null)
 	}
 

@@ -10,7 +10,7 @@ import {
 	Typography,
 	Input,
 	Checkbox,
-	Button,
+	Button
 } from '@material-tailwind/react'
 
 const Login = () => {
@@ -41,7 +41,7 @@ const Login = () => {
 			if (response.status === 200) {
 				const token = response.data.token
 				// sessionStorage.setItem('jwtToken', token)
-				
+
 				login(token)
 				navigate('/dashboard')
 			} else {
@@ -61,17 +61,38 @@ const Login = () => {
 					color='gray'
 					className='grid mb-4 h-28 place-items-center'
 				>
-					<Typography variant='h3' color='white'>Sign In</Typography>
+					<Typography variant='h3' color='white'>
+						Sign In
+					</Typography>
 				</CardHeader>
 				<CardBody className='flex flex-col gap-4'>
-					<Input label='Email' size='lg' onChange={handleChange} name='email' value={formData.email} />
-					<Input label='Password' size='lg' onChange={handleChange} name='password' value={formData.password}/>
+					<Input
+						label='Email'
+						size='lg'
+						onChange={handleChange}
+						name='email'
+						value={formData.email}
+					/>
+					<Input
+						label='Password'
+						size='lg'
+						onChange={handleChange}
+						name='password'
+						value={formData.password}
+					/>
 					<div className='-ml-2.5'>
 						<Checkbox label='Remember Me' />
 					</div>
 				</CardBody>
 				<CardFooter className='pt-0'>
-					<Button variant='gradient' fullWidth type='submit' onClick={handleSubmit}>Sign In</Button>
+					<Button
+						variant='gradient'
+						fullWidth
+						type='submit'
+						onClick={handleSubmit}
+					>
+						Sign In
+					</Button>
 					<Typography variant='small' className='flex justify-center mt-6'>
 						Don&apos;t have an account?
 						<Typography
@@ -79,9 +100,7 @@ const Login = () => {
 							color='blue-gray'
 							className='ml-1 font-bold'
 						>
-						<Link to='/register'>
-							Sign Up
-						</Link>
+							<Link to='/register'>Sign Up</Link>
 						</Typography>
 					</Typography>
 				</CardFooter>
