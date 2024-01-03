@@ -41,6 +41,7 @@ const Dashboard = () => {
 	return (
 		<>
 			<div>Dashboard</div>
+			<div>menu</div>
 			<div>
 				{projectData.map(project => (
 					<li key={project._id}>{project.title}</li>
