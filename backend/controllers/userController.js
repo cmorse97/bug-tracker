@@ -15,11 +15,21 @@ const loginUser = asyncHandler(async (req, res) => {
 
 	// Compare user input password with hashed password
 	if (user && (await bcrypt.compare(password, user.password))) {
+		const tokens = generateTokens(user._id)
+
+		// Set refresh token as an HTTPonly cookie
+		res.cookie('refreshToken', tokens.refreshToken, {
+			secure: true,
+			httpOnly: true,
+			sameSite: 'strict',
+			maxAge: 7 * 24 * 60 * 60 * 1000
+		})
+
 		res.json({
 			_id: user.id,
 			name: user.name,
 			email: user.email,
-			token: generateToken(user._id)
+			token: tokens.jwtToken
 		})
 	} else {
 		res.status(400)
@@ -58,11 +68,21 @@ const registerUser = asyncHandler(async (req, res) => {
 	})
 
 	if (user) {
+		const tokens = generateTokens(user._id)
+
+		// Set refresh token as an HTTPonly cookie
+		res.cookie('refreshToken', tokens.refreshToken, {
+			secure: true,
+			httpOnly: true,
+			sameSite: 'strict',
+			maxAge: 7 * 24 * 60 * 60 * 1000
+		})
+
 		res.status(201).json({
 			_id: user.id,
 			name: user.name,
 			email: user.email,
-			token: generateToken(user._id)
+			token: tokens.jwtToken
 		})
 	} else {
 		res.status(400)
@@ -84,10 +104,16 @@ const getUser = asyncHandler(async (req, res) => {
 })
 
 // Generate JWT
-const generateToken = id => {
-	return jwt.sign({ id }, process.env.JWT_SECRET, {
-		expiresIn: '30d'
+const generateTokens = id => {
+	const jwtToken = jwt.sign({ id }, process.env.JWT_SECRET, {
+		expiresIn: '1h'
 	})
+
+	const refreshToken = jwt.sign({ id }, process.env.JWT_SECRET, {
+		expiresIn: '7d'
+	})
+
+	return { jwtToken, refreshToken }
 }
 
 module.exports = {
