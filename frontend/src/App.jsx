@@ -5,6 +5,7 @@ import Register from './pages/auth/Register'
 import Dashboard from './pages/user/Dashboard'
 import ErrorPage from './pages/ErrorPage'
 
+// Update app to use typescript and nextjs
 const router = createBrowserRouter([
 	{
 		path: '/',
